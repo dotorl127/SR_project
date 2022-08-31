@@ -1,0 +1,59 @@
+train_dataset:
+  dataset:
+    name: paired-image-folders
+    args:
+      root_path_1: ./load/merged_dataset/train # training data
+      root_path_2: ./load/merged_dataset/GT # ground-truth data
+      split_file: ./load/merged_dataset/split.json
+      split_key: train
+      cache: npy
+  wrapper:
+    name: moon-paired
+    args:
+      augment: true
+  batch_size: 8
+
+val_dataset:
+  dataset:
+    name: paired-image-folders
+    args:
+      root_path_1: ./load/merged_dataset/train # validation data
+      root_path_2: ./load/merged_dataset/GT # validation ground-truth data
+      split_file: ./load/merged_dataset/split.json
+      split_key: val
+      first_k: 100
+      cache: npy
+  wrapper:
+    name: moon-paired
+    args:
+      augment: false
+  batch_size: 8
+
+data_norm:
+  inp: {sub: [0], div: [1]}  # test ret sub: [0.06], div: [0.12]
+  gt: {sub: [0], div: [1]}  # test ret sub: [0.06], div: [0.12]
+
+model:
+  name: edsr-unet-moon
+  args:
+    encoder_spec:
+      name: edsr-moon
+      args:
+        n_colors: 1
+        res_scale: 0.1
+    backbone_spec:
+      name: lsr-unet
+      args:
+        n_colors: 1
+        dropout: false
+
+optimizer:
+  name: adam
+  args:
+    lr: 1.e-4
+    weight_decay: 1.e-5
+epoch_max: 1000
+
+epoch_val: 1
+epoch_save: 25
+#eval_type: ssim

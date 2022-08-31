@@ -1,0 +1,10 @@
+torch==1.6
+torchvision==0.7.0
+tensorflow-tensorboard
+tensorboardX
+numpy
+pyyaml
+tqdm
+imageio
+scikit-image
+torchinfo
