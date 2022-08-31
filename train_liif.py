@@ -261,4 +261,5 @@ if __name__ == '__main__':
         save_name += '_' + args.tag
     save_path = os.path.join('./save', save_name)
 
+    #main function
     main(config, save_path)
